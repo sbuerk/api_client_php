@@ -119,10 +119,10 @@
 		define('LINK_FORMAT', 'linkFormat');
 		define('REVIEW_STATE', 'reviewState');
 		define('TRACKING_CATEGORY', 'trackingCategory');
-		define('MONTH', 'month');
-		define('DAY', 'day');
-		define('YEAR', 'year');
-		define('DAY_OF_WEEK', 'dayOfWeek');
+		#define('MONTH', 'month');
+		#define('DAY', 'day');
+		#define('YEAR', 'year');
+		#define('DAY_OF_WEEK', 'dayOfWeek');
 		define('APPLICATION', 'application');
 		define('MEDIA_SLOT', 'mediaSlot');
 
@@ -135,8 +135,8 @@
 		define('FREE_PRODUCTS', 'freeProducts');
 		define('NO_SHIPPING_COSTS', 'noShippingCosts');
 		define('LOTTERIES', 'lotteries');
-		
-		
+
+
 /**
  * roleTypeEnum
  */
@@ -161,7 +161,7 @@
 
 		#define('ACTIVE', 'active');
 		#define('INACTIVE', 'inactive');
-		
+
 
 /**
  * mediaSlotStatusEnum

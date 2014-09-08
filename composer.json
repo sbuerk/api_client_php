@@ -1,17 +1,56 @@
 {
     "name": "zanox/api-client-php",
+    "type": "library",
     "description": "Zanox API with composer support",
+    "keywords": ["Zanox"],
+    "homepage": "http://www.zanox.com",
     "authors": [
         {
             "name": "Zanox",
             "email": "rba@zanox.com"
+        },
+        {
+            "name": "Thomas Nicolai",
+            "email": "thomas.nicolai@sociomantic.com",
+            "role": "Author"
+        },
+        {
+            "name": "Lars Kirchhoff",
+            "email": "lars.kirchhoff@sociomantic.com",
+            "role": "Author"
+        },
+        {
+            "name": "Jack Hage",
+            "email": "jack@inboxpro.com",
+            "role": "Author"
+        },
+        {
+            "name": "Alexander Ostermeyr",
+            "github": "ao@codesprint.de",
+            "role": "Author"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/pear/Crypt_HMAC2.git"
         }
     ],
     "require": {
-
+        "php": ">=5.2.4",
+        "pear/Crypt_HMAC2": "dev-trunk",
+        "composer/installers": "*"
     },
     "autoload": {
-        "files": ["src/ApiClient.php"]
+        "files": ["src/ApiClient.php"],
+        "psr-0": {
+            "": "src/"
+        }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "master"
+        }
+    }
 }
