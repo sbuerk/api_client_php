@@ -20,6 +20,11 @@
             "role": "Author"
         },
         {
+            "name": "Patrick Leahy",
+            "email": "tenebrousedge@gmail.com",
+            "role": "Author"
+        },
+        {
             "name": "Jack Hage",
             "email": "jack@inboxpro.com",
             "role": "Author"
@@ -44,7 +49,7 @@
     "require": {
         "php": ">=5.2.4",
         "pear/Crypt_HMAC2": "dev-trunk",
-        "composer/installers": "*"
+        "zendframework/zend-stdlib": "2.*"
     },
     "autoload": {
         "files": ["src/ApiClient.php"],

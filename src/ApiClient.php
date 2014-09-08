@@ -1,9 +1,15 @@
 <?php
 
-require_once 'includes/ApiConst.php';
-require_once 'includes/ApiError.php';
+namespace Zanox;
 
-/* Test Comment for myfix branch */
+use Traversable;
+use Zanox\Api\AbstractApiMethods;
+use Zanox\Api\Adapter\Methods20090701Interface;
+use Zanox\Api\Adapter\Methods20110301Interface;
+use Zanox\Api\ClientException;
+use Zanox\Api\Constants;
+use Zanox\Api\MethodsInterface;
+use Zend\Stdlib\ArrayUtils;
 
 /**
  * zanox Api Client (ConnectId Version)
@@ -138,150 +144,118 @@ require_once 'includes/ApiError.php';
  * @uses        PEAR Crypt_HMAC (required for PHP < 5.1.2)
  */
 
-
-/**
- * Base Directory Path
- */
-define("DIR", dirname(__FILE__));
-
-
 /**
  * ApiClient
  */
-final class ApiClient
+abstract class ApiClient
 {
-
     /**
-     * Protocol instances.
-     *
-     * @static
-     * @var     static instances of ApiClient
-     * @access  private
+     * @var array
      */
-    private static $instance = array();
-
-
-
-    /**
-     * Make the constructor private to prevent the class being instantiated
-     * directly.
-     *
-     * @return void
-     * @access privat
-     */
-    private function __construct() { }
-
-
+    protected static $classMap = array(
+        Constants::SOAP_INTERFACE => array(
+            Constants::VERSION_2009_07_01 => '\Zanox\Api\Adapter\Soap\Methods20090701',
+            Constants::VERSION_2011_03_01 => '\Zanox\Api\Adapter\Soap\Methods20110301',
+        ),
+        Constants::RESTFUL_INTERFACE => array(
+            Constants::VERSION_2009_07_01 => '\Zanox\Api\Adapter\Rest\Methods20090701',
+            Constants::VERSION_2011_03_01 => '\Zanox\Api\Adapter\Rest\Methods20110301',
+        ),
+    );
 
     /**
-     * Factory function returns a static instance of the ApiClient.
-     *
      * You can choose between three different api protocols. JSON, XML and
-     * SOAP are supported by the zanox api. If no version is given the latest
-     * version is always used.
+     * SOAP are supported by the zanox api. If no version is given JSON is used.
      *
      * ---
      *
      * Usage example: creating api instance
      * <code>
-     *      // use soap api interface and the latest version
-     *      $api = ApiClient::factory(PROTOCOL_SOAP, VERSION_DEFAULT);
-     *
-     *      // use xml api interface and the latest vesion
-     *      $api = ApiClient::factory(PROTOCOL_XML, VERSION_DEFAULT);
-     *
-     *      // use json api interface and latest version
-     *      $api = ApiClient::factory(PROTOCOL_JSON);
+     *      // use soap api interface and the default version
+     *      $api = ApiClient::factory();
      * </code>
      *
-     * ---
-     *
-     * @param   string      $protocol       api protocol type (XML,JSON or SOAP)
-     * @param   string      $version        api version is optional
-     *
-     * @return  mixed                       object on successful instantiation
-     *                                      or false
-     *
-     * @static
-     * @access  public
+     * @param array $options
+     * @return MethodsInterface|Methods20110301Interface|Methods20090701Interface|AbstractApiMethods
+     * @throws \Zanox\Api\ClientException
      */
-    public static function factory ( $protocol = PROTOCOL_DEFAULT, $version = VERSION_DEFAULT )
+    public static function factory(array $options = array())
     {
-        $protocol = strtolower($protocol);
-
-        if ( empty(self::$instance[$version][$protocol]) )
-        {
-            $class = self::getInterface($version, $protocol);
-
-            if ( $class )
-            {
-                self::$instance[$version][$protocol] = new $class($protocol, $version);
-            }
-            else
-            {
-                throw new ApiClientException(CLI_ERROR_PROTOCOL_VERSION);
-            }
+        if ($options instanceof Traversable) {
+            $options = ArrayUtils::iteratorToArray($options);
         }
 
-        return self::$instance[$version][$protocol];
-    }
-
-
-
-    /**
-     * Automatically includes the required ApiClient protocol class.
-     *
-     * @param   string      $version        api version
-     * @param   string      $protocol       api protocol
-     *
-     * @return  mixed                       class name or false
-     *
-     * @access  private
-     */
-    private static function getInterface ( $version, $protocol )
-    {
-        $path = DIR . '/version/' . $version . '/';
-
-        if ( is_dir($path) )
-        {
-            if ( $protocol == PROTOCOL_SOAP )
-            {
-                $class = SOAP_INTERFACE;
-                $classfile = $path . $class . '.php';
-            }
-            else if ( $protocol == PROTOCOL_XML || $protocol == PROTOCOL_JSON )
-            {
-                $class = RESTFUL_INTERFACE;
-                $classfile = $path . $class . '.php';
-            }
-            else
-            {
-                throw new ApiClientException(CLI_ERROR_PROTOCOL);
-            }
-
-            if ( is_file($classfile) )
-            {
-                require_once $classfile;
-
-                if ( class_exists($class) )
-                {
-                  return $class;
-                }
-                else
-                {
-                    throw new ApiClientException(CLI_ERROR_PROTOCOL_CLASS);
-                }
-            }
-            else
-            {
-                throw new ApiClientException(CLI_ERROR_PROTOCOL_CLASSFILE);
-            }
+        if (!is_array($options)) {
+            throw new ClientException(
+                sprintf(
+                    '%s expects an array or Traversable argument; received "%s"',
+                    __METHOD__,
+                    (is_object($options) ? get_class($options) : gettype($options))
+                )
+            );
         }
-        else
-        {
-            throw new ApiClientException(CLI_ERROR_VERSION);
+
+        $interface = Constants::SOAP_INTERFACE;
+        if (isset($options['interface'])) {
+            $interface = $options['interface'];
         }
+
+        $versionMap = null;
+        if (isset(static::$classMap[$interface])) {
+            $versionMap = static::$classMap[$interface];
+        }
+
+        if (!$versionMap) {
+            throw new ClientException(
+                sprintf(
+                    '%s expects the "interface" attribute to resolve to an existing interface type; received "%s"',
+                    __METHOD__,
+                    $interface
+                )
+            );
+        }
+
+        $version = Constants::VERSION_DEFAULT;
+        if (isset($options['version'])) {
+            $version = $options['version'];
+        }
+
+        $class = null;
+        if (isset($versionMap[$version])) {
+            $class = $versionMap[$version];
+        }
+
+        $protocol = Constants::PROTOCOL_DEFAULT;
+        if (isset($options['protocol'])) {
+            $protocol = $options['protocol'];
+        }
+
+        if (!class_exists($class)) {
+            throw new ClientException(sprintf(
+                    '%s expects the "version" attribute to resolve to an existing version; received "%s"',
+                    __METHOD__,
+                    $version
+                ));
+        }
+
+        unset($options['interface']);
+        unset($options['version']);
+
+        /** @var MethodsInterface|Methods20110301Interface|Methods20090701Interface|AbstractApiMethods $adapter */
+        $adapter = new $class($protocol, $version);
+
+        if (!$adapter instanceof MethodsInterface) {
+            throw new ClientException(
+                sprintf(
+                    '%s expects the "class" attribute to resolve to a valid Zanox\MethodsInterface instance; received "%s"',
+                    __METHOD__,
+                    $class
+                )
+            );
+        }
+
+        return $adapter;
     }
 }
 
-?>
+

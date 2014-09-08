@@ -1,6 +1,8 @@
 <?php
 
-require_once DIR . '/includes/model/IAuthorization.php';
+namespace Zanox\Api;
+
+use Crypt_HMAC2;
 
 /**
  * Api Authorization
@@ -19,15 +21,15 @@ require_once DIR . '/includes/model/IAuthorization.php';
  *
  * @uses        PEAR Crypt_HMAC (required PHP < 5.1.2)
  */
-class ApiAuthorization implements IAuthorization
+class Authorization implements AuthorizationInterface
 {
 
     /**
      * zanox connect ID
      *
-     * @var     string      $connectId          zanox connect id
+     * @var     string $connectId zanox connect id
      *
-     * @access  private
+
      */
     private $connectId = '';
 
@@ -35,8 +37,7 @@ class ApiAuthorization implements IAuthorization
     /**
      * zanox shared secret key
      *
-     * @var     string      $secrectKey         secret key to sign messages
-     * @access  private
+     * @var     string $secrectKey secret key to sign messages
      */
     private $secretKey = '';
 
@@ -44,8 +45,7 @@ class ApiAuthorization implements IAuthorization
     /**
      * zanox public key
      *
-     * @var     string      $applicationId      application id for oauth
-     * @access  private
+     * @var     string $applicationId application id for oauth
      */
     private $publicKey = '';
 
@@ -53,8 +53,7 @@ class ApiAuthorization implements IAuthorization
     /**
      * Timestamp of the message
      *
-     * @var     string      $timestamp          timestamp to sign the message
-     * @access  private
+     * @var     string $timestamp timestamp to sign the message
      */
     private $timestamp = false;
 
@@ -62,8 +61,7 @@ class ApiAuthorization implements IAuthorization
     /**
      * api version
      *
-     * @var     string      $version            api version
-     * @access  private
+     * @var     string $version api version
      */
     private $version = false;
 
@@ -72,50 +70,41 @@ class ApiAuthorization implements IAuthorization
      * message security
      *
      * @var     boolean
-     * @access  private
      */
     private $msg_security = false;
-
 
 
     /**
      * Contructor
      *
-     * @access     public
-     *
-     * @return     void
-     */
-    function __construct() {}
 
+     */
+    function __construct()
+    {
+    }
 
 
     /**
      * Set connectId
      *
-     * @param      string      $timestamp      time stamp
+     * @param      string $timestamp time stamp
      *
-     * @access     public
-     * @final
      *
-     * @return     void
+
      */
-    final public function setTimestamp( $timestamp )
+    final public function setTimestamp($timestamp)
     {
         $this->timestamp = $timestamp;
     }
 
 
-
-   /**
+    /**
      * Returns the current REST timestamp.
      *
      * If there hasn't already been set a datetime we create one automatically.
      * As a format the HTTP Header protocol RFC format is taken.
      *
      * @see        see HTTP RFC for the datetime format
-     *
-     * @access     public
-     * @final
      *
      * @return     string                      message timestamp
      */
@@ -125,29 +114,22 @@ class ApiAuthorization implements IAuthorization
     }
 
 
-
     /**
      * Set the connectId
      *
-     * @param      string      $connectId      zanox connectId
+     * @param      string $connectId zanox connectId
      *
-     * @access     public
-     * @final
      *
-     * @return     void
+
      */
-    final public function setConnectId( $connectId )
+    final public function setConnectId($connectId)
     {
         $this->connectId = $connectId;
     }
 
 
-
     /**
      * Returns the connectId
-     *
-     * @access     public
-     * @final
      *
      * @return     string                      zanox connect id
      */
@@ -157,29 +139,22 @@ class ApiAuthorization implements IAuthorization
     }
 
 
-
     /**
      * Sets the public key.
      *
-     * @param      string      $publicKey      public key
+     * @param      string $publicKey public key
      *
-     * @access     public
-     * @final
      *
-     * @return     void
+
      */
-    final public function setPublicKey( $publicKey )
+    final public function setPublicKey($publicKey)
     {
         $this->publicKey = $publicKey;
     }
 
 
-
     /**
      * Returns the public key
-     *
-     * @access     public
-     * @final
      *
      * @return     string                      zanox public key
      */
@@ -189,39 +164,32 @@ class ApiAuthorization implements IAuthorization
     }
 
 
-
     /**
      * Set SecretKey
      *
-     * @param      string      $secretKey      zanox secret key
+     * @param      string $secretKey zanox secret key
      *
-     * @access     public
-     * @final
      *
-     * @return     void
+
      */
-    final public function setSecretKey( $secretKey )
+    final public function setSecretKey($secretKey)
     {
         $this->secretKey = $secretKey;
     }
 
 
-
     /**
      * Sets the API version to use.
      *
-     * @param      string      $version        API version
+     * @param      string $version API version
      *
-     * @access     public
-     * @final
      *
-     * @return     void
+
      */
-    final public function setVersion( $version )
+    final public function setVersion($version)
     {
         $this->version = $version;
     }
-
 
 
     /**
@@ -230,16 +198,12 @@ class ApiAuthorization implements IAuthorization
      * Authentication is only required and therefore enabled for some privacy
      * related methods like accessing your profile or reports.
      *
-     * @access     public
-     * @final
-     *
-     * @return     void
+     * @param bool $status
      */
-    final public function setSecureApiCall( $status = false )
+    final public function setSecureApiCall($status = false)
     {
         $this->msg_security = $status;
     }
-
 
 
     /**
@@ -247,9 +211,6 @@ class ApiAuthorization implements IAuthorization
      *
      * Method returns true if message needs to signed with crypted hmac
      * string and nonce. Otherwise false is returned.
-     *
-     * @access     public
-     * @final
      *
      * @return     bool                        true if secure message
      */
@@ -259,7 +220,6 @@ class ApiAuthorization implements IAuthorization
     }
 
 
-
     /**
      * Returns the crypted hash signature for the message.
      *
@@ -267,28 +227,23 @@ class ApiAuthorization implements IAuthorization
      * and the timestamp of the message. Be aware of the 15 minutes timeframe
      * when setting the time manually.
      *
-     * @param      string      $service        service name or restful action
-     * @param      string      $method         method or uri
-     * @param      string      $nonce          nonce of request
-     *
-     * @access     public
-     * @final
+     * @param      string $service service name or restful action
+     * @param      string $method method or uri
+     * @param      string $nonce nonce of request
      *
      * @return     string                      encoded string
      */
-    final public function getSignature( $service, $method, $nonce )
+    final public function getSignature($service, $method, $nonce)
     {
         $sign = $service . strtolower($method) . $this->timestamp;
 
-        if ( !empty($nonce) )
-        {
+        if (!empty($nonce)) {
             $sign .= $nonce;
         }
 
         $hmac = $this->hmac($sign);
 
-        if ( $hmac )
-        {
+        if ($hmac) {
             return $hmac;
         }
 
@@ -296,47 +251,39 @@ class ApiAuthorization implements IAuthorization
     }
 
 
-
     /**
      * Returns hash based nonce.
      *
      * @see    http://en.wikipedia.org/wiki/Cryptographic_nonce
      *
-     * @access     public
-     * @final
-     *
      * @return     string                           md5 hash-based nonce
      */
-    final public function getNonce ()
+    final public function getNonce()
     {
-        $mt   = microtime();
+        $mt = microtime();
         $rand = mt_rand();
 
         return md5($mt . $rand);
     }
 
 
-
     /**
      * Encodes the given message parameters with Base64.
      *
-     * @param      string          $str            string to encode
+     * @param      string $str string to encode
      *
-     * @access     private
-     *
-     * @return                                     encoded string
+     * @return     string                          encoded string
      */
-    private function encodeBase64( $str )
+    private function encodeBase64($str)
     {
         $encode = '';
 
-        for ($i=0; $i < strlen($str); $i+=2){
+        for ($i = 0; $i < strlen($str); $i += 2) {
             $encode .= chr(hexdec(substr($str, $i, 2)));
         }
 
         return base64_encode($encode);
     }
-
 
 
     /**
@@ -347,31 +294,22 @@ class ApiAuthorization implements IAuthorization
      * message. Make sure you have at least one of the options working on your
      * system.
      *
-     * @param      string      $message            message to sign
-     *
-     * @access     private
+     * @param      string $mesgparams message to sign
      *
      * @return     string                          signed sha1 message hash
      */
-    private function hmac( $mesgparams )
+    private function hmac($mesgparams)
     {
-        if ( function_exists('hash_hmac') )
-        {
+        if (function_exists('hash_hmac')) {
             $hmac = hash_hmac('sha1', utf8_encode($mesgparams), $this->secretKey);
             $hmac = $this->encodeBase64($hmac);
-        }
-        else
-        {
-            require_once 'Crypt/HMAC.php';
-
-            $hashobj = new Crypt_HMAC($this->secretKey, "sha1");
+        } else {
+            $hashobj = new Crypt_HMAC2($this->secretKey, "sha1");
             $hmac = $this->encodeBase64($hashobj->hash(utf8_encode($mesgparams)));
         }
 
         return $hmac;
     }
 
-
 }
 
-?>
