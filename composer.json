@@ -52,10 +52,5 @@
             "": "src/"
         }
     },
-    "minimum-stability": "dev",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "master"
-        }
-    }
+    "minimum-stability": "dev"
 }
