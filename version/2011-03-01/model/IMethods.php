@@ -64,8 +64,8 @@ interface IMethods
      * @param      array       $programId      limit search to program list of
      *                                         programs (optional)
      * @param      boolean     $hasImages      products with images (optional)
-     * @param      float       $minPrice       minimum price (optional)
-     * @param      float       $maxPrice       maximum price (optional)
+     * @param      float|int   $minPrice       minimum price (optional)
+     * @param      float|int   $maxPrice       maximum price (optional)
      * @param      int         $adspaceId      adspace id (optional)
      * @param      int         $page           page of result set (optional)
      * @param      int         $items          items per page (optional)
@@ -73,7 +73,7 @@ interface IMethods
      * @access     public
      * @category   nosignature
      *
-     * @return     object or string            list of products or false
+     * @return     object|string               list of products or false
      */
     public function searchProducts ( $query, $searchType = 'phrase',
         $region = NULL, $categoryId = NULL, $programId = array(),
@@ -1098,7 +1098,7 @@ interface IMethods
      * Get tracking categories for ad space; if not program member, returns program's default categories
      *
      * @param      int         $adspaceId      adspace id (mandatory)
-     * @param      int         $programId      advertiser program id (mandatory)     
+     * @param      int         $programId      advertiser program id (mandatory)
      * @param      int         $page           result set page (optional)
      * @param      int         $items          items per page (optional)
      *

@@ -111,11 +111,11 @@ class RestfulMethods extends ApiMethods implements IMethods
      *                                         (contextual or phrase)
      * @param      string      $region         limit search to region (optional)
      * @param      int         $categoryId     limit search to categorys (optional)
-     * @param      array       $programId      limit search to program list of
+     * @param      array       $programs       limit search to program list of
      *                                         programs (optional)
      * @param      boolean     $hasImages      products with images (optional)
-     * @param      float       $minPrice       minimum price (optional)
-     * @param      float       $maxPrice       maximum price (optional)
+     * @param      float|int   $minPrice       minimum price (optional)
+     * @param      float|int   $maxPrice       maximum price (optional)
      * @param      int         $adspaceId      adspace id (optional)
      * @param      int         $page           page of result set (optional)
      * @param      int         $items          items per page (optional)
@@ -123,7 +123,7 @@ class RestfulMethods extends ApiMethods implements IMethods
      * @access     public
      * @category   nosignature
      *
-     * @return     object or string            list of products or false
+     * @return     object|string               list of products or false
      */
     public function searchProducts ( $query, $searchType = 'phrase',
         $region = NULL, $categoryId = NULL, $programs = array(),
@@ -1746,6 +1746,29 @@ class RestfulMethods extends ApiMethods implements IMethods
         return false;
     }
 
+    /**
+     * Return sale basket.
+     *
+     * @param      string         $saleId         sale id
+     *
+     * @access     public
+     * @category   signature
+     * @return     object or string            profile item
+     */
+    public function getSaleBasket($saleId) {
+        $resource = array('reports', 'sales', 'sale', $saleId, 'basket');
+
+        $this->setRestfulAction(GET);
+        $this->setSecureApiCall(true);
+
+        $result = $this->doRestfulRequest($resource);
+
+        if($result) {
+            return $result;
+        }
+
+        return false;
+    }
 
 
     /**
@@ -2422,7 +2445,7 @@ class RestfulMethods extends ApiMethods implements IMethods
      * NOTE: not yet implemented with REST protocol!!!!
      *
      * @param      int         $adspaceId      adspace id (mandatory)
-     * @param      int         $programId      advertiser program id (mandatory)     
+     * @param      int         $programId      advertiser program id (mandatory)
      * @param      int         $page           result set page (optional)
      * @param      int         $items          items per page (optional)
      *
@@ -2455,5 +2478,3 @@ class RestfulMethods extends ApiMethods implements IMethods
     }
 
 }
-
-?>

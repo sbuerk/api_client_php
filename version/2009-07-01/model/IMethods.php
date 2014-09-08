@@ -86,8 +86,8 @@ interface IMethods
      * @param      array       $programId      limit search to program list of
      *                                         programs (optional)
      * @param      boolean     $hasImages      products with images (optional)
-     * @param      float       $minPrice       minimum price (optional)
-     * @param      float       $maxPrice       maximum price (optional)
+     * @param      float|int   $minPrice       minimum price (optional)
+     * @param      float|int   $maxPrice       maximum price (optional)
      * @param      int         $adspaceId      adspace id (optional)
      * @param      int         $page           page of result set (optional)
      * @param      int         $items          items per page (optional)
