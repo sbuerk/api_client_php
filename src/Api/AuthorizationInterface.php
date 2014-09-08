@@ -1,9 +1,11 @@
 <?php
 
+namespace Zanox\Api;
+
 /**
- * IAuthorization Interface
+ * AuthorizationInterface Interface
  *
- * The IAuthorization Interface defines the methods that need to be implemented
+ * The AuthorizationInterface Interface defines the methods that need to be implemented
  * in order to support the required hash-based signing of messages.
  *
  * Supported Version: PHP >= 5.0
@@ -19,20 +21,16 @@
  * @version     2009-09-01
  * @copyright   Copyright (c) 2007-2011 zanox.de AG
  */
-interface IAuthorization
+interface AuthorizationInterface
 {
 
     /**
      * Set connectId
      *
-     * @access     public
      *
-     * @param      string      $timestamp      time stamp
-     *
-     * @return     void
+     * @param      string $timestamp time stamp
      */
-    public function setTimestamp( $timestamp );
-
+    public function setTimestamp($timestamp);
 
 
     /**
@@ -42,86 +40,63 @@ interface IAuthorization
      * As a format the HTTP Header protocol RFC format is taken.
      *
      * @see        see HTTP RFC for the datetime format
-     * @access     public
      *
      * @return     string                      message timestamp
      */
     public function getTimestamp();
 
 
-
     /**
      * Set connectId
      *
-     * @access     public
      *
-     * @param      string      $connectId      zanox connectId
-     *
-     * @return     void
+     * @param      string $connectId zanox connectId
      */
-    public function setConnectId( $connectId );
-
+    public function setConnectId($connectId);
 
 
     /**
      * Returns connectId
      *
-     * @access     public
      *
      * @return     string                      zanox connect id
      */
     public function getConnectId();
 
 
-
     /**
      * Sets the public key.
      *
-     * @access     public
      *
-     * @param      string      $publicKey      public key
-     *
-     * @return     void
+     * @param      string $publicKey public key
      */
-    public function setPublicKey( $publicKey );
-
+    public function setPublicKey($publicKey);
 
 
     /**
      * Returns the public key
      *
-     * @access     public
      *
      * @return     string                      zanox public key
      */
     public function getPublicKey();
 
 
-
     /**
      * Set SecretKey
      *
-     * @access     public
      *
-     * @param      string      $secretKey      zanox secret key
-     *
-     * @return     void
+     * @param      string $secretKey zanox secret key
      */
-    public function setSecretKey( $secretKey );
-
+    public function setSecretKey($secretKey);
 
 
     /**
      * Sets the API version to use.
      *
-     * @param      string      $version        API version
-     *
-     * @return     void
-     *
-     * @access     public
+     * @param      string $version API version
      */
-    public function setVersion( $version );
-
+    public function setVersion($version);
 
 
     /**
@@ -130,12 +105,10 @@ interface IAuthorization
      * Authentication is only required and therefore enabled for some privacy
      * related methods like accessing your profile or reports.
      *
-     * @access     private
-     *
-     * @return     void
+     * @param bool $status
+     * @return
      */
-    public function setSecureApiCall( $status = false );
-
+    public function setSecureApiCall($status = false);
 
 
     /**
@@ -144,14 +117,12 @@ interface IAuthorization
      * Method returns true if message needs to signed with crypted hmac
      * string and nonce. Otherwise false is returned.
      *
-     * @access     private
      *
      * @return     bool                        true if secure message
      */
     public function isSecureApiCall();
 
 
-    
     /**
      * Returns the crypted hash signature for a api message.
      *
@@ -159,24 +130,21 @@ interface IAuthorization
      * and the timestamp of the message. Be aware of the 15 minutes timeframe
      * when setting the time manually.
      *
-     * @access     private
      *
-     * @param      string      $service        service name or restful action
-     * @param      string      $method         method or uri
-     * @param      string      $nonce          nonce of request
+     * @param      string $service service name or restful action
+     * @param      string $method method or uri
+     * @param      string $nonce nonce of request
      *
      * @return     string                      encoded string
      */
-    public function getSignature( $service, $method, $nonce );
+    public function getSignature($service, $method, $nonce);
 
 
-    
     /**
      * Returns nonce.
      *
      * @see         http://en.wikipedia.org/wiki/Cryptographic_nonce
      *
-     * @access      public
      *
      * @return      string                      nonce
      */
@@ -184,4 +152,3 @@ interface IAuthorization
 
 }
 
-?>
