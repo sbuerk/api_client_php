@@ -26,7 +26,12 @@
         },
         {
             "name": "Alexander Ostermeyr",
-            "github": "ao@codesprint.de",
+            "email": "ao@codesprint.de",
+            "role": "Author"
+        },
+        {
+            "name": "Adam Kuśmierz",
+            "email": "adam@kusmierz.be",
             "role": "Author"
         }
     ],
