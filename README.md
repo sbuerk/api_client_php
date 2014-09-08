@@ -1,4 +1,4 @@
-zanox API client in PHP
+zanox API client in PHP (with composer support and other fixes)
 =======================
 
 A)  Requirements

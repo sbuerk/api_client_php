@@ -1,0 +1,17 @@
+{
+    "name": "zanox/api-client-php",
+    "description": "Zanox API with composer support",
+    "authors": [
+        {
+            "name": "Zanox",
+            "email": "rba@zanox.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "files": ["src/ApiClient.php"]
+    },
+    "minimum-stability": "dev"
+}
