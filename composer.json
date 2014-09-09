@@ -42,13 +42,13 @@
     ],
     "repositories": [
         {
-            "type": "git",
-            "url": "https://github.com/pear/Crypt_HMAC2.git"
+            "type": "pear",
+            "url": "http://pear.php.net"
         }
     ],
     "require": {
         "php": ">=5.2.4",
-        "pear/Crypt_HMAC2": "dev-trunk",
+        "pear-pear.php.net/Crypt_HMAC2": "1.*",
         "zendframework/zend-stdlib": "2.*"
     },
     "autoload": {
@@ -56,6 +56,5 @@
         "psr-0": {
             "": "src/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
