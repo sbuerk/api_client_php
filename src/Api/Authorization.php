@@ -304,7 +304,7 @@ class Authorization implements AuthorizationInterface
             $hmac = hash_hmac('sha1', utf8_encode($mesgparams), $this->secretKey);
             $hmac = $this->encodeBase64($hmac);
         } else {
-            $hashobj = new Crypt_HMAC2($this->secretKey, "sha1");
+            $hashobj = new Crypt_HMAC2($this->secretKey, 'sha1');
             $hmac = $this->encodeBase64($hashobj->hash(utf8_encode($mesgparams)));
         }
 
