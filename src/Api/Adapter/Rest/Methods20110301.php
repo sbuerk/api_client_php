@@ -1685,7 +1685,7 @@ class Methods20110301 extends AbstractApiMethods implements Methods20110301Inter
     {
         $resource = array('reports', 'sales', 'date', $date);
 
-        $parameter['dateType'] = $dateType;
+        $parameter['datetype'] = $dateType;
         $parameter['program'] = $programId;
         $parameter['adspace'] = $adspaceId;
         $parameter['state'] = $reviewState;
@@ -1736,7 +1736,7 @@ class Methods20110301 extends AbstractApiMethods implements Methods20110301Inter
     {
         $resource = array('reports', 'leads', 'date', $date);
 
-        $parameter['dateType'] = $dateType;
+        $parameter['datetype'] = $dateType;
         $parameter['program'] = $programId;
         $parameter['adspace'] = $adspaceId;
         $parameter['state'] = $reviewState;
@@ -1824,7 +1824,7 @@ class Methods20110301 extends AbstractApiMethods implements Methods20110301Inter
 
         $parameter['fromdate'] = $fromDate;
         $parameter['todate'] = $toDate;
-        $parameter['dateType'] = $dateType;
+        $parameter['datetype'] = $dateType;
         $parameter['currency'] = $currency;
         $parameter['program'] = $programId;
         $parameter['admedium'] = $admediumId;
