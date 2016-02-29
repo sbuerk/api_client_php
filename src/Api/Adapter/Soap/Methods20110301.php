@@ -2070,9 +2070,9 @@ class Methods20110301 extends AbstractApiMethods implements Methods20110301Inter
     {
         $method = ucfirst(__FUNCTION__);
 
-        $parameter['fromDate'] = $programId;
-        $parameter['adspaceId'] = $adspaceId;
-        $parameter['reviewState'] = $reviewState;
+        $parameter['program'] = $programId;
+        $parameter['adspace'] = $adspaceId;
+        $parameter['state'] = $reviewState;
         $parameter['date'] = $date;
         $parameter['dateType'] = $dateType;
         $parameter['page'] = $page;
@@ -2161,9 +2161,9 @@ class Methods20110301 extends AbstractApiMethods implements Methods20110301Inter
     {
         $method = ucfirst(__FUNCTION__);
 
-        $parameter['fromDate'] = $programId;
-        $parameter['adspaceId'] = $adspaceId;
-        $parameter['reviewState'] = $reviewState;
+        $parameter['program'] = $programId;
+        $parameter['adspace'] = $adspaceId;
+        $parameter['state'] = $reviewState;
         $parameter['date'] = $date;
         $parameter['dateType'] = $dateType;
         $parameter['page'] = $page;
@@ -2345,4 +2345,3 @@ class Methods20110301 extends AbstractApiMethods implements Methods20110301Inter
         return false;
     }
 }
-
