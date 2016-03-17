@@ -2072,6 +2072,7 @@ class Methods20110301 extends AbstractApiMethods implements Methods20110301Inter
 
         $parameter['program'] = $programId;
         $parameter['adspace'] = $adspaceId;
+        $parameter['programId'] = $programId;
         $parameter['state'] = $reviewState;
         $parameter['date'] = $date;
         $parameter['dateType'] = $dateType;
