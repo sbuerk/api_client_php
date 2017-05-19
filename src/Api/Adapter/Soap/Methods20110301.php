@@ -2070,7 +2070,7 @@ class Methods20110301 extends AbstractApiMethods implements Methods20110301Inter
     {
         $method = ucfirst(__FUNCTION__);
 
-        $parameter['program'] = $programId;
+        $parameter['programId'] = $programId;
         $parameter['adspace'] = $adspaceId;
         $parameter['state'] = $reviewState;
         $parameter['date'] = $date;
